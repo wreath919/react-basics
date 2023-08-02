@@ -1,17 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import TodoList from './components/TodoList'
-// import NewTodo from './components/NewTodo'
+import NewTodo from './components/NewTodo'
+import { TodoState } from './components/TodosState'
 
 // function App() {
 //   return <div className="App"></div>
 // }
 
-const App: React.FC = () => {
-  const todos = [{ id: 't1', text: 'Typescriptコースの完了' }]
+const App = () => {
+  const [todos, setTodos] = useState<TodoState[]>([])
+  const todoAddedHandler = (text: string) => {
+    setTodos(prevTodos => [...prevTodos, {id: Math.random().toString(), text: text}])
+  }
+  const todoDeleteHandler = (todoId: string) => {
+    setTodos(prevTodos => prevTodos.filter(todo => todo.id !== todoId))
+  }
   return (
     <div className="App">
-      {/* <NewTodo /> */}
-      <TodoList items={todos} />
+      <NewTodo onAddedTodo={todoAddedHandler}/>
+      <TodoList items={todos} onDeleteTodo={todoDeleteHandler}/>
     </div>
   )
 }
